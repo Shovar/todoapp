@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5 text-center">Todo List</h1>
+        <h1 class="mt-5 text-center">ToDo List</h1>
         <div class="mt-5 text-center" >
             <form action="/" method="post" class="row mt-3">
                 <div class="col-md-10">
@@ -23,15 +23,35 @@
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-primary btn-lg">Add Task</button>
                 </div>
+                <div class="col-md-1">  
+                    <label for="dueDate" class="col-form-label fw-bold">Due date:</label>
+                </div>
+                <div class="col-md-3">  
+                    <input class="form-control form-control-st" type="date" name="dueDate" lang="en" placeholder="ddmmyyyy" required>
+                </div>
+            </form>
                 <div class="mt-4">
                     <th:block th:each="task : ${tasks}">
                         <div class="card mb-2">
                             <div class="card-body d-flex justify-content-between align-items-center"> 
-                                <span th:classappend="${task.completed} ? 'text-strikethrough'"  th:text="${task.title}" th:class="${task.completed} ? 'completed' : ''"></span>
-                                <div>
-                                    <a th:href="@{/{id}/toggle(id=${task.id})}" class="btn btn-outline-secondary btn-sm">Toggle</a>
-                                    <a th:href="@{/{id}/delete(id=${task.id})}" class="btn btn-outline-danger btn-sm">Delete</a>
+                                <div th:if="${!task.edit}" class="col-md-3">
+                                    <span th:if="${!task.edit}" th:classappend="${task.completed} ? 'text-strikethrough'"  th:text="${task.title}" th:class="${task.completed} ? 'completed' : ''"></span>
                                 </div>
+                                <div th:if="${!task.edit}" class="col-md-1">
+                                    <span th:if="${!task.edit}" th:classappend="${task.completed} ? 'text-strikethrough'"  th:text="${task.dueDate}" th:class="${task.completed} ? 'completed' : ''"></span>
+                                </div>
+                                <form th:if="${task.edit}" th:action="@{/{id}/update(id=${task.id})}" method="post" id="editForm" class="d-flex justify-content-between align-items-center">
+                                        <input th:if="${task.edit}" type="text" class="form-control md-1" th:value="${task.title}" name="title" form="editForm" />
+                                        <input th:if="${task.edit}" type="date" class="form-control md-1" th:value="${task.dueDate}" name="dueDate" form="editForm" />
+                                    <div>
+                                        <button th:if="${task.edit}" type="submit" class="btn btn-outline-info btn-sm">Accept</button>
+                                    </div>
+                                </form>
+                                <div> 
+                                    <a th:if="${!task.edit}" th:href="@{/{id}/edit(id=${task.id})}"   class="btn btn-outline-info btn-sm"  th:text=" ${task.edit} ? 'Accept' : 'Edit'" ></a>
+                                    <a th:if="${!task.edit}" th:href="@{/{id}/toggle(id=${task.id})}" class="btn btn-outline-secondary btn-sm">Toggle</a>
+                                    <a th:href="@{/{id}/delete(id=${task.id})}" class="btn btn-outline-danger btn-sm">Delete</a>
+                                 </div>
                             </div>
                         </div>
                     </th:block>

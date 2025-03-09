@@ -13,6 +13,6 @@ import lombok.Data;
     private Long id;  
     private String title;
     private boolean completed; 
-    
-    
+    private boolean edit; 
+    private String dueDate;
 }

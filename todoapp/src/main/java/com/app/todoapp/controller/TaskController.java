@@ -30,8 +30,9 @@ public class TaskController {
     }
 
     @PostMapping
-    public String createTasks(@RequestParam String title) {
-        taskService.createTask(title);
+    public String createTasks(@RequestParam String title, @RequestParam String dueDate) {
+        System.out.println("title: " + title + " dueDate: " + dueDate);
+        taskService.createTask(title, dueDate);
         return "redirect:/"; // redirect to the root URL (es un refresh)
     }
 
@@ -44,6 +45,18 @@ public class TaskController {
     @GetMapping("/{id}/toggle")
     public String toggleTask(@PathVariable Long id) {
         taskService.toggleTask(id);
+        return "redirect:/";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String editTask(@PathVariable Long id) {
+        taskService.editTask(id);
+        return "redirect:/";
+    }
+
+    @PostMapping("/{id}/update")
+    public String updateTask(@PathVariable Long id, @RequestParam String title, @RequestParam String dueDate) {
+        taskService.updateTask(id, title, dueDate);
         return "redirect:/";
     }
 
